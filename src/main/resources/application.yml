@@ -1,0 +1,31 @@
+# Server config is relevant only when it's running via ./gradlew bootRun
+server:
+  port: 8081
+
+  # Set Context Path
+  servlet:
+    context-path: /ms-tenant
+
+logging:
+  level:
+    root: INFO
+
+    org.springframework.r2dbc: DEBUG
+
+spring:
+  ## Set Application Name ONLY SET HERE
+  application:
+    name: platform-ms-tenant
+
+  security:
+    strategy: MODE\_INHERITABLETHREADLOCAL
+
+  r2dbc:
+    url: r2dbc:postgresql://${POSTGRES_HOST:localhost:5432}/webflux
+    username: ${POSTGRES_USERNAME:postgres}
+    password: ${POSTGRES_PASSWORD:sa}
+
+timeouts:
+  connectionTimeout: 100000
+  readTimeout: 200
+  writeTimeout: 200

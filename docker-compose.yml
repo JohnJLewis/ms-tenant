@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  postgres-db:
+    # Generate Docker Container from Docker Image already built
+    image: "postgres-db:1.0"
+#    build: docker/postgres/.
+#    container_name: postgres-db
+
+# Only expose port if external access to the Postgres database running in Docker is required
+    ports:
+      - "5433:5432"
+
+#    environment:
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=docker
+#      - POSTGRES_DB=webflux
+
+  ms-tenant:
+    # Generate Docker Container from Docker Image already built
+    image: "ms-tenant:1.0"
+    build: .
+#      context: src/main/docker
+
+#    container_name: webflux
+
+    # Don't start this container until the database has started successfully
+    depends_on:
+      - postgres-db
+
+    # Expose external port 8081 to Docker port 8081 - API accessed through this port
+    ports:
+      - "8081:8081"
+
+    environment:
+      - POSTGRES_HOST=postgres-db
+      - POSTGRES_PASSWORD=docker
+
